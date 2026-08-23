@@ -1,0 +1,9 @@
+node_modules
+
+.env
+.env.local
+.env.production
+
+# Next.js build output
+.turbo
+../.turbo

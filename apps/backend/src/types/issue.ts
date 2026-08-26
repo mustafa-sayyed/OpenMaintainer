@@ -11,8 +11,9 @@ export type IssueEvent = {
     repo: string;
     owner: string;
     repoFullName: string;
-    type: string;
+    eventType: string;
     action: string;
     title: string;
-    body: string | null;
+    body?: string;
+    comment?: string;
 };

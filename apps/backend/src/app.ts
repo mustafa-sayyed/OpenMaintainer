@@ -11,30 +11,17 @@ app.get('/health', (req, res) => {
 });
 
 app.post('/api/v1/github', async (req, res) => {
-    const event = req.headers['x-github-event'];
+    const event = req.headers['x-github-event'] as string;
 
-    const githubEvent = handleGitHubEvent(event as string, req.body);
+    const githubEvent = handleGitHubEvent(event, req.body);
+
+    if (!githubEvent) {
+        return res.status(200).send('Event not handled');
+    }
 
     console.log('Received GitHub event:', githubEvent);
-
-
-    if (githubEvent?.type === 'issue') {
-        const issue = await getIssue({
-            installationId: githubEvent.installationId,
-            issueNumber: githubEvent.issueNumber,
-            owner: githubEvent.owner,
-            repo: githubEvent.repo,
-        });
-
-        console.log('Issue fetched from GitHub...');
-        console.log('Issue details: ', {
-            number: issue.number,
-            title: issue.title,
-            body: issue.body,
-        });
-
-        await handleIssue(githubEvent);
-    }
+	
+    await handleIssue(githubEvent);
 
     res.status(200).send('Webhook received');
 });

@@ -17,13 +17,12 @@ app.post('/api/v1/github', async (req, res) => {
 
     console.log('Received GitHub event:', githubEvent);
 
-    const installationId = req.body.installation?.id;
 
     if (githubEvent?.type === 'issue') {
         const issue = await getIssue({
-            installationId,
+            installationId: githubEvent.installationId,
             issueNumber: githubEvent.issueNumber,
-            owner: githubEvent.repoOwner,
+            owner: githubEvent.owner,
             repo: githubEvent.repo,
         });
 
@@ -34,7 +33,7 @@ app.post('/api/v1/github', async (req, res) => {
             body: issue.body,
         });
 
-        await handleIssue({...githubEvent, installationId: installationId});
+        await handleIssue(githubEvent);
     }
 
     res.status(200).send('Webhook received');

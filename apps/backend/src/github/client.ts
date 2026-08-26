@@ -16,12 +16,12 @@ export const getIssue = async ({
     owner,
     issueNumber,
 }: {
-    installationId: string;
+    installationId: number;
     repo: string;
     owner: string;
     issueNumber: number;
 }) => {
-    const octokit = await getInstallationOctokit(parseInt(installationId));
+    const octokit = await getInstallationOctokit(installationId);
     const issue = await octokit.rest.issues.get({
         owner,
         repo,

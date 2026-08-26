@@ -1,34 +1,22 @@
 import { generateText, isStepCount } from 'ai';
 import { groq } from '@ai-sdk/groq';
-import { issueCommentTool } from '../tools/issueComment.js';
+import { createIssueCommentTool } from '../tools/issueComment.js';
+import type { IssueEvent } from '../types/issue.js';
 
-export async function handleIssue(issue: {
-    action: string;
-    issueNumber: number;
-    title: string;
-    body: string;
-    repo: string;
-    repoFullName: string;
-    repoOwner: string;
-    installationId: number;
-}) {
+export async function handleIssue(issue: IssueEvent) {
     console.log('🤖 Issue Agent received an issue');
 
     try {
         const { text } = await generateText({
             model: groq('openai/gpt-oss-120b'),
             tools: {
-                issueCommentTool,
+                issueCommentTool: createIssueCommentTool(issue),
             },
             prompt: `
             You are a AI Maintainer assistant.
             Analyze the following GitHub issue.
 
             Repository: ${issue.repo}
-            Repo owner: ${issue.repoOwner}
-            Issue #${issue.issueNumber}
-            installationId: ${issue.installationId}
-
             Title:
             ${issue.title}
 

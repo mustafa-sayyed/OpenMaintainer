@@ -4,7 +4,12 @@ export const handleGitHubEvent = (
     event: string,
     body: any
 ): IssueEvent | null => {
-    if (event === 'issues' || event === 'issue_comment') {
+    if (
+        (event === 'issues' && body.action === 'opened') ||
+        (event === 'issue_comment' &&
+            body.action === 'created' &&
+            body.comment.user.type === 'User')
+    ) {
         const { action, issue, repository, installation } = body;
 
         return {
@@ -17,7 +22,14 @@ export const handleGitHubEvent = (
             repo: repository.name,
             repoFullName: repository.full_name,
             owner: repository.owner.login,
-            comment: event === 'issue_comment' ? body.comment.body : undefined,
+            comment:
+                event === 'issue_comment'
+                    ? {
+                          body: body.comment.body,
+                          author: body.comment.user.login,
+                          authorType: body.comment.user.type,
+                      }
+                    : undefined,
         };
     }
 

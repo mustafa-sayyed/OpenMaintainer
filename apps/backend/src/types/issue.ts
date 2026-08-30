@@ -15,5 +15,9 @@ export type IssueEvent = {
     action: string;
     title: string;
     body?: string;
-    comment?: string;
+    comment?: {
+        body: string;
+        author: string;
+        authorType: string;
+    };
 };

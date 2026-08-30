@@ -1,5 +1,8 @@
 import 'dotenv/config';
 import { App } from 'octokit';
+import { POLICY_FILE_PATH } from '../utils/constant.js';
+import type { Policy, PolicyPayload } from '../types/policy.js';
+import { parsePolicy } from '../utils/parseYaml.js';
 
 export const githubApp = new App({
     privateKey: process.env.GITHUB_APP_PRIVATE_KEY!,
@@ -54,4 +57,47 @@ export const createIssueComment = async ({
     });
 
     return response.data;
+};
+
+export const getRepoPolicy = async ({
+    repo,
+    owner,
+    installationId,
+}: PolicyPayload): Promise<Policy> => {
+    const octokit = await getInstallationOctokit(installationId);
+
+    try {
+        const { data } = await octokit.rest.repos.getContent({
+            owner,
+            repo,
+            path: POLICY_FILE_PATH,
+        });
+
+        if (
+            !data ||
+            !('content' in data) ||
+            typeof data.content !== 'string'
+        ) {
+            throw new Error(
+                `Policy path is not a file: ${owner}/${repo}/${POLICY_FILE_PATH}`
+            );
+        }
+
+        const content = Buffer.from(data.content, 'base64').toString('utf-8');
+        return parsePolicy(content);
+    } catch (error) {
+        if (
+            error &&
+            typeof error === 'object' &&
+            'status' in error &&
+            error.status === 404
+        ) {
+            throw new Error(
+                `Policy file not found in the repository: ${owner}/${repo}`,
+                { cause: error }
+            );
+        }
+
+        throw error;
+    }
 };

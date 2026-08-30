@@ -1,7 +1,7 @@
 import express from 'express';
 import { handleGitHubEvent } from './github/githubEventHandler.js';
 import { handleIssue } from './agents/issueAgent.js';
-import { getIssue } from './github/client.js';
+import { verifyGithubWebhook } from './github/verifyGithubWebhook.js';
 
 const app = express();
 app.use(express.json());
@@ -10,7 +10,7 @@ app.get('/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toLocaleString() });
 });
 
-app.post('/api/v1/github', async (req, res) => {
+app.post('/api/v1/github', verifyGithubWebhook, async (req, res) => {
     const event = req.headers['x-github-event'] as string;
 
     const githubEvent = handleGitHubEvent(event, req.body);

@@ -73,7 +73,7 @@ export const createIssueTools = async (issue: IssueContext) => {
             description: 'Read the comments of the current github issue.',
             inputSchema: z.object({}),
             execute: async () => {
-                const policyResult = await verifyPolicy('read_comments');
+                const policyResult = await verifyPolicy('read_issue_comments');
                 if (policyResult && policyResult.code === "POLICY_DENIED") {
                     return policyResult;
                 }
@@ -103,7 +103,7 @@ export const createIssueTools = async (issue: IssueContext) => {
             }),
             execute: async ({ label }) => {
                 try {
-                    const policyResult = await verifyPolicy('create_label');
+                    const policyResult = await verifyPolicy('create_issue_label');
                     if (policyResult && policyResult.code === "POLICY_DENIED") {
                         return policyResult;
                     }
@@ -136,7 +136,7 @@ export const createIssueTools = async (issue: IssueContext) => {
             inputSchema: z.object({}),
             execute: async () => {
                 try {
-                    const policyResult = await verifyPolicy('read_labels');
+                    const policyResult = await verifyPolicy('read_issue_labels');
                     if (policyResult && policyResult.code === "POLICY_DENIED") {
                         return policyResult;
                     }

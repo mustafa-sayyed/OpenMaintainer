@@ -7,12 +7,12 @@ const PolicySchema = z
         version: z.literal(1),
         permissions: z
             .object({
-                create_issue_comment: z.boolean().optional(),
                 close_issue: z.boolean().optional(),
-                read_labels: z.boolean().optional(),
-                read_comments: z.boolean().optional(),
                 search_issues: z.boolean().optional(),
-                create_label: z.boolean().optional(),
+                read_issue_comments: z.boolean().optional(),
+                create_issue_comment: z.boolean().optional(),
+                read_issue_labels: z.boolean().optional(),
+                create_issue_label: z.boolean().optional(),
             })
             .strict()
             .default({}),

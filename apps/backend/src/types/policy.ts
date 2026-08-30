@@ -1,10 +1,10 @@
 export type Action =
-    | 'create_issue_comment'
     | 'close_issue'
-    | 'read_labels'
-    | 'read_comments'
     | 'search_issues'
-    | 'create_label';
+    | 'read_issue_comments'
+    | 'create_issue_comment'
+    | 'read_issue_labels'
+    | 'create_issue_label';
 
 export interface PolicyPayload {
     repo: string;
@@ -16,11 +16,11 @@ export interface Policy {
     version: 1;
 
     permissions?: {
-        create_issue_comment?: boolean;
         close_issue?: boolean;
-        read_labels?: boolean;
-        read_comments?: boolean;
         search_issues?: boolean;
-        create_label?: boolean;
+        read_issue_comments?: boolean;
+        create_issue_comment?: boolean;
+        read_issue_labels?: boolean;
+        create_issue_label?: boolean;
     };
 }

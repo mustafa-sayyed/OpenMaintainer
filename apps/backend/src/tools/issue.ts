@@ -2,9 +2,31 @@ import { tool } from 'ai';
 import { z } from 'zod';
 import { getInstallationOctokit } from '../github/client.js';
 import type { IssueContext } from '../types/issue.js';
+import { policyEngine } from '../policy/policyEngine.js';
+import type { Action, PolicyPayload } from '../types/policy.js';
 
 export const createIssueTools = async (issue: IssueContext) => {
     const github = await getInstallationOctokit(issue.installationId);
+
+    const policyPayload: PolicyPayload = {
+        repo: issue.repo,
+        owner: issue.owner,
+        installationId: issue.installationId,
+    };
+
+    const verifyPolicy = async (action: Action) => {
+        const allowed = await policyEngine.canExecute(policyPayload, action);
+
+        if (allowed) {
+            return null;
+        }
+
+        return {
+            error: 'Action denied by repository policy.',
+            code: 'POLICY_DENIED',
+            action,
+        };
+    };
 
     return {
         createComment: tool({
@@ -14,6 +36,11 @@ export const createIssueTools = async (issue: IssueContext) => {
             }),
             execute: async ({ comment }) => {
                 try {
+                    const policyResult = await verifyPolicy('create_issue_comment');
+                    if (policyResult && policyResult.code === "POLICY_DENIED") {
+                        return policyResult;
+                    }
+
                     const result = await github.rest.issues.createComment({
                         repo: issue.repo,
                         owner: issue.owner,
@@ -46,6 +73,11 @@ export const createIssueTools = async (issue: IssueContext) => {
             description: 'Read the comments of the current github issue.',
             inputSchema: z.object({}),
             execute: async () => {
+                const policyResult = await verifyPolicy('read_comments');
+                if (policyResult && policyResult.code === "POLICY_DENIED") {
+                    return policyResult;
+                }
+
                 const result = await github.rest.issues.listComments({
                     repo: issue.repo,
                     owner: issue.owner,
@@ -71,6 +103,11 @@ export const createIssueTools = async (issue: IssueContext) => {
             }),
             execute: async ({ label }) => {
                 try {
+                    const policyResult = await verifyPolicy('create_label');
+                    if (policyResult && policyResult.code === "POLICY_DENIED") {
+                        return policyResult;
+                    }
+
                     const result = await github.rest.issues.addLabels({
                         repo: issue.repo,
                         owner: issue.owner,
@@ -99,6 +136,11 @@ export const createIssueTools = async (issue: IssueContext) => {
             inputSchema: z.object({}),
             execute: async () => {
                 try {
+                    const policyResult = await verifyPolicy('read_labels');
+                    if (policyResult && policyResult.code === "POLICY_DENIED") {
+                        return policyResult;
+                    }
+
                     const result = await github.rest.issues.listLabelsOnIssue({
                         repo: issue.repo,
                         owner: issue.owner,
@@ -135,6 +177,11 @@ export const createIssueTools = async (issue: IssueContext) => {
             }),
             execute: async ({ stateReason, reason }) => {
                 try {
+                    const policyResult = await verifyPolicy('close_issue');
+                    if (policyResult && policyResult.code === "POLICY_DENIED") {
+                        return policyResult;
+                    }
+
                     const result = await github.rest.issues.update({
                         repo: issue.repo,
                         owner: issue.owner,
@@ -171,6 +218,11 @@ export const createIssueTools = async (issue: IssueContext) => {
             }),
             execute: async ({ query }) => {
                 try {
+                    const policyResult = await verifyPolicy('search_issues');
+                    if (policyResult && policyResult.code === "POLICY_DENIED") {
+                        return policyResult;
+                    }
+
                     const result = await github.rest.issues.listForRepo({
                         repo: issue.repo,
                         owner: issue.owner,

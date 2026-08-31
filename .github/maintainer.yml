@@ -1,30 +1,30 @@
 version: 1
 
 permissions:
-    tools:
-        close_issue: true
-        search_issues: true
-        create_issue_comment: true
-        read_issue_comments: true
-        read_issue_labels: true
-        create_issue_label: true
-        read_pull_request: true
-        merge_pull_request: true
+  tools:
+    closeIssue: true
+    searchIssues: true
+    createIssueComment: true
+    readIssueComments: true
+    readIssueLabels: true
+    createIssueLabel: true
+    readPullRequest: true
+    mergePullRequest: true
 
-    actions:
-        close_issue:
-            decision: true
-            condition:
-                issues:
-                    labels:
-                        any:
-                            - 'duplicate'
-                            - 'invalid'
+  actions:
+    closeIssue:
+      decision: allow
+      condition:
+        issues:
+          labels:
+            any:
+              - 'duplicate'
+              - 'invalid'
 
-        merge_pull_request:
-            decision: true
-            condition:
-                pull_request:
-                    author: dependabot[bot]
-                    update_type:
-                        in: [minor, patch]
+    mergePullRequest:
+      decision: allow
+      condition:
+        pullRequest:
+          author: 'dependabot[bot]'
+          updateType:
+            in: [minor, patch]

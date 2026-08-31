@@ -2,7 +2,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 import { getInstallationOctokit } from '../github/client.js';
 import { policyEngine } from '../policy/policyEngine.js';
-import type { Action, PolicyPayload } from '../types/policy.js';
+import type { PolicyPayload, Tool } from '../types/policy.js';
 import type { PullRequestEvent } from '../types/pullRequest.js';
 
 export type DependencyUpdateType = 'major' | 'minor' | 'patch' | 'unsupported';
@@ -54,8 +54,8 @@ export const createPullRequestTools = async (
         installationId: pullRequest.installationId,
     };
 
-    const verifyPolicy = async (action: Action) => {
-        const allowed = await policyEngine.canExecute(policyPayload, action);
+    const verifyPolicy = async (tool: Tool) => {
+        const allowed = await policyEngine.canUseTool(policyPayload, tool);
 
         if (allowed) {
             return null;
@@ -64,7 +64,7 @@ export const createPullRequestTools = async (
         return {
             error: 'Action denied by repository policy.',
             code: 'POLICY_DENIED',
-            action,
+            action: tool,
         };
     };
 
@@ -74,7 +74,7 @@ export const createPullRequestTools = async (
             inputSchema: z.object({}),
             execute: async () => {
                 try {
-                    const policyResult = await verifyPolicy('read_pull_request');
+                    const policyResult = await verifyPolicy('readPullRequest');
                     if (policyResult) {
                         return policyResult;
                     }
@@ -120,7 +120,7 @@ export const createPullRequestTools = async (
             inputSchema: z.object({}),
             execute: async () => {
                 try {
-                    const policyResult = await verifyPolicy('merge_pull_request');
+                    const policyResult = await verifyPolicy('mergePullRequest');
                     if (policyResult) {
                         return policyResult;
                     }
@@ -173,6 +173,26 @@ export const createPullRequestTools = async (
                                 'Pull request is not ready to merge cleanly.',
                             code: 'PULL_REQUEST_NOT_READY',
                             mergeableState: currentPullRequest.mergeable_state,
+                        };
+                    }
+
+                    const actionAllowed =
+                        await policyEngine.canExecuteAction(
+                            policyPayload,
+                            'mergePullRequest',
+                            {
+                                pullRequest: {
+                                    author: currentPullRequest.user?.login ?? '',
+                                    updateType,
+                                },
+                            }
+                        );
+
+                    if (!actionAllowed) {
+                        return {
+                            error: 'Action denied by repository policy.',
+                            code: 'POLICY_DENIED',
+                            action: 'mergePullRequest',
                         };
                     }
 

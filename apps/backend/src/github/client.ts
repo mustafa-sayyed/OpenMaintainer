@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { App } from 'octokit';
 import { POLICY_FILE_PATH } from '../utils/constant.js';
 import type { Policy, PolicyPayload } from '../types/policy.js';
-import { parsePolicy } from '../utils/parseYaml.js';
+import { parsePolicy } from '../policy/parsePolicy.js';
 
 export const githubApp = new App({
     privateKey: process.env.GITHUB_APP_PRIVATE_KEY!,

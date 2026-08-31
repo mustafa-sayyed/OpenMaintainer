@@ -1,5 +1,5 @@
 {
-  "name": "@ai-maintainer/backend",
+  "name": "@OpenMaintainer/backend",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",

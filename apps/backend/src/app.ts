@@ -1,6 +1,7 @@
 import express from 'express';
 import { handleGitHubEvent } from './github/githubEventHandler.js';
 import { handleIssue } from './agents/issueAgent.js';
+import { handlePullRequest } from './agents/pullRequestAgent.js';
 import { verifyGithubWebhook } from './github/verifyGithubWebhook.js';
 
 const app = express();
@@ -21,7 +22,11 @@ app.post('/api/v1/github', verifyGithubWebhook, async (req, res) => {
 
     console.log('Received GitHub event:', githubEvent);
 	
-    await handleIssue(githubEvent);
+    if (githubEvent.eventType === 'pull_request') {
+        await handlePullRequest(githubEvent);
+    } else {
+        await handleIssue(githubEvent);
+    }
 
     res.status(200).send('Webhook received');
 });

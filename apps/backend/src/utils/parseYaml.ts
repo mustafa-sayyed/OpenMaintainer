@@ -13,6 +13,8 @@ const PolicySchema = z
                 create_issue_comment: z.boolean().optional(),
                 read_issue_labels: z.boolean().optional(),
                 create_issue_label: z.boolean().optional(),
+                read_pull_request: z.boolean().optional(),
+                merge_pull_request: z.boolean().optional(),
             })
             .strict()
             .default({}),

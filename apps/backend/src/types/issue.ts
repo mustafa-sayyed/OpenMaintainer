@@ -11,7 +11,7 @@ export type IssueEvent = {
     repo: string;
     owner: string;
     repoFullName: string;
-    eventType: string;
+    eventType: 'issues' | 'issue_comment';
     action: string;
     title: string;
     body?: string;

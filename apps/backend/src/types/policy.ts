@@ -4,7 +4,9 @@ export type Action =
     | 'read_issue_comments'
     | 'create_issue_comment'
     | 'read_issue_labels'
-    | 'create_issue_label';
+    | 'create_issue_label'
+    | 'read_pull_request'
+    | 'merge_pull_request';
 
 export interface PolicyPayload {
     repo: string;
@@ -22,5 +24,7 @@ export interface Policy {
         create_issue_comment?: boolean;
         read_issue_labels?: boolean;
         create_issue_label?: boolean;
+        read_pull_request?: boolean;
+        merge_pull_request?: boolean;
     };
 }

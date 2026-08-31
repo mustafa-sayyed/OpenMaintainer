@@ -8,27 +8,27 @@ const app = express();
 app.use(express.json());
 
 app.get('/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toLocaleString() });
+  res.json({ status: 'ok', timestamp: new Date().toLocaleString() });
 });
 
 app.post('/api/v1/github', verifyGithubWebhook, async (req, res) => {
-    const event = req.headers['x-github-event'] as string;
+  const event = req.headers['x-github-event'] as string;
 
-    const githubEvent = handleGitHubEvent(event, req.body);
+  const githubEvent = handleGitHubEvent(event, req.body);
 
-    if (!githubEvent) {
-        return res.status(200).send('Event not handled');
-    }
+  if (!githubEvent) {
+    return res.status(200).send('Event not handled');
+  }
 
-    console.log('Received GitHub event:', githubEvent);
-	
-    if (githubEvent.eventType === 'pull_request') {
-        await handlePullRequest(githubEvent);
-    } else {
-        await handleIssue(githubEvent);
-    }
+  console.log('Received GitHub event:', githubEvent);
 
-    res.status(200).send('Webhook received');
+  if (githubEvent.eventType === 'pull_request') {
+    await handlePullRequest(githubEvent);
+  } else {
+    await handleIssue(githubEvent);
+  }
+
+  res.status(200).send('Webhook received');
 });
 
 export { app };

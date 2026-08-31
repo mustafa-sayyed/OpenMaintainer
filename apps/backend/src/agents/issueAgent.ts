@@ -4,21 +4,21 @@ import { createIssueTools } from '../tools/issue.js';
 import type { IssueEvent } from '../types/issue.js';
 
 export async function handleIssue(issue: IssueEvent) {
-    console.log('🤖 Issue Agent received an issue');
+  console.log('🤖 Issue Agent received an issue');
 
-    const issueTools = await createIssueTools(issue);
-    try {
-        const { text } = await generateText({
-            model: groq('openai/gpt-oss-120b'),
-            tools: {
-                createIssueCommentTool: issueTools.createComment,
-                getCommentsTool: issueTools.getComments,
-                createLabelTool: issueTools.createLabel,
-                readlabelsTool: issueTools.readLabels,
-                closeIssueTool: issueTools.closeIssue,
-                searchIssuesTool: issueTools.searchIssues,
-            },
-            prompt: `
+  const issueTools = await createIssueTools(issue);
+  try {
+    const { text } = await generateText({
+      model: groq('openai/gpt-oss-120b'),
+      tools: {
+        createIssueCommentTool: issueTools.createComment,
+        getCommentsTool: issueTools.getComments,
+        createLabelTool: issueTools.createLabel,
+        readlabelsTool: issueTools.readLabels,
+        closeIssueTool: issueTools.closeIssue,
+        searchIssuesTool: issueTools.searchIssues,
+      },
+      prompt: `
             You are an AI Maintainer assistant helping triage and respond to GitHub issues.
 
             Repository: ${issue.repo}
@@ -55,29 +55,29 @@ export async function handleIssue(issue: IssueEvent) {
             - Do not mention tool usage.
             - Keep the comment suitable for a public GitHub issue thread.
             `,
-            stopWhen: isStepCount(7),
-            onToolExecutionStart: (event) => {
-                console.log(
-                    `Tool executtion Started: ${event.toolCall.toolName}, Params: ${JSON.stringify(event.toolCall.input, null, 2)}`
-                );
-            },
-            onToolExecutionEnd: (event) => {
-                console.log(
-                    `Tool Executed: ${event.toolCall.toolName}, Ouput: ${JSON.stringify(event.toolOutput, null, 2)}`
-                );
-            },
-        });
+      stopWhen: isStepCount(7),
+      onToolExecutionStart: (event) => {
+        console.log(
+          `Tool executtion Started: ${event.toolCall.toolName}, Params: ${JSON.stringify(event.toolCall.input, null, 2)}`
+        );
+      },
+      onToolExecutionEnd: (event) => {
+        console.log(
+          `Tool Executed: ${event.toolCall.toolName}, Ouput: ${JSON.stringify(event.toolOutput, null, 2)}`
+        );
+      },
+    });
 
-        console.log('\n🤖 AI Agent Response:\n');
-        console.log(text);
-    } catch (error) {
-        console.error('Error in handleIssue:', error);
-    }
+    console.log('\n🤖 AI Agent Response:\n');
+    console.log(text);
+  } catch (error) {
+    console.error('Error in handleIssue:', error);
+  }
 }
 
 const getEventInstruction = (event: IssueEvent) => {
-    if (event.eventType === 'issues') {
-        return `
+  if (event.eventType === 'issues') {
+    return `
         This is a newly opened issue.
 
         Analyze the issue title and description.
@@ -89,8 +89,8 @@ const getEventInstruction = (event: IssueEvent) => {
         - add an appropriate label
         - ask for missing information
         - post a concise, actionable response`;
-    } else if (event.eventType === 'issue_comment') {
-        return `
+  } else if (event.eventType === 'issue_comment') {
+    return `
         A comment has been added to an existing issue.
 
         Before deciding how to respond:
@@ -107,8 +107,8 @@ const getEventInstruction = (event: IssueEvent) => {
         - add an appropriate label
         - ask for missing information
         - post a concise, actionable response`;
-    }
-    return `
+  }
+  return `
         This event is not currently handled by a specialized workflow.
         Analyze the situation conservatively and do not take unnecessary actions.
     `;

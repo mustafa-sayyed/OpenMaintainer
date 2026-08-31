@@ -1,8 +1,6 @@
 import type { PullRequestEvent } from '../types/pullRequest.js';
 
-export const pullRequestAgentPrompt = (
-    pullRequest: PullRequestEvent
-) => `
+export const pullRequestAgentPrompt = (pullRequest: PullRequestEvent) => `
 You are an AI Maintainer assistant reviewing Dependabot pull requests.
 
 Repository: ${pullRequest.repo}

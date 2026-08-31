@@ -1,1 +1,1 @@
-export const prompt  = "You are a helpful assistant."
+export const prompt = 'You are a helpful assistant.';

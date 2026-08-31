@@ -1,12 +1,29 @@
-export type Action =
-    | 'close_issue'
-    | 'search_issues'
-    | 'read_issue_comments'
-    | 'create_issue_comment'
-    | 'read_issue_labels'
-    | 'create_issue_label'
-    | 'read_pull_request'
-    | 'merge_pull_request';
+export type Action = 'closeIssue' | 'mergePullRequest';
+
+export type Tool =
+    | 'closeIssue'
+    | 'searchIssues'
+    | 'readIssueComments'
+    | 'createIssueComment'
+    | 'readIssueLabels'
+    | 'createIssueLabel'
+    | 'readPullRequest'
+    | 'mergePullRequest';
+
+export type UpdateType = 'major' | 'minor' | 'patch';
+export type Decision = 'allow' | 'deny' | 'ask';
+
+export type ToolSchema = Record<Tool, boolean>;
+
+export interface PolicyEvaluationContext {
+    issue?: {
+        labels: string[];
+    };
+    pullRequest?: {
+        author: string;
+        updateType: UpdateType;
+    };
+}
 
 export interface PolicyPayload {
     repo: string;
@@ -16,15 +33,30 @@ export interface PolicyPayload {
 
 export interface Policy {
     version: 1;
-
-    permissions?: {
-        close_issue?: boolean;
-        search_issues?: boolean;
-        read_issue_comments?: boolean;
-        create_issue_comment?: boolean;
-        read_issue_labels?: boolean;
-        create_issue_label?: boolean;
-        read_pull_request?: boolean;
-        merge_pull_request?: boolean;
+    permissions: {
+        tools: ToolSchema;
+        actions: {
+            closeIssue: {
+                decision: Decision;
+                condition?: {
+                    issues: {
+                        labels: {
+                            any: string[];
+                        };
+                    };
+                };
+            };
+            mergePullRequest: {
+                decision: Decision;
+                condition?: {
+                    pullRequest: {
+                        author: string;
+                        updateType: {
+                            in: UpdateType[];
+                        };
+                    };
+                };
+            };
+        };
     };
 }

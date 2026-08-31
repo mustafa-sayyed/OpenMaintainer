@@ -23,6 +23,9 @@ export const handleGitHubEvent = (
             repo: repository.name,
             repoFullName: repository.full_name,
             owner: repository.owner.login,
+            labels: issue.labels?.map((label: any) =>
+                typeof label === 'string' ? label : label.name ?? ''
+            ),
             comment:
                 event === 'issue_comment'
                     ? {

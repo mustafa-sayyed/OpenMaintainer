@@ -3,6 +3,7 @@ export type IssueContext = {
     issueNumber: number;
     repo: string;
     owner: string;
+    labels?: string[];
 };
 
 export type IssueEvent = {
@@ -15,6 +16,7 @@ export type IssueEvent = {
     action: string;
     title: string;
     body?: string;
+    labels?: string[];
     comment?: {
         body: string;
         author: string;

@@ -1,11 +1,8 @@
-# AI Maintainer Assistant
+# OpenMaintainer
 
-AI Maintainer Assistant is an AI-powered assistant for automating routine
-repository maintenance on GitHub.
+OpenMaintainer is a team of Autonomous AI Agents that automates routine repository maintenance.
 
-It helps maintainers reduce repetitive work such as triaging issues and
-handling dependency updates, while keeping repository actions controlled by
-maintainer-defined policies.
+It helps maintainers reduce repetitive work such as triaging issues, answering common contributor questions, and handling dependency updates, while keeping repository actions controlled by maintainer-defined policies.
 
 ## Features
 

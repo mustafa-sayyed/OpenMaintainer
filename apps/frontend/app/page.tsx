@@ -1,6 +1,16 @@
+import {
+  ArrowDown,
+  ArrowUpRight,
+  Check,
+  CircleDot,
+  Hash,
+  MoreHorizontal,
+  ShieldCheck,
+} from 'lucide-react';
+
 const githubUrl = 'https://github.com/mustafa-sayyed/OpenMaintainer';
 const appUrl = 'https://github.com/apps/openmaintainerai';
-const mono = 'font-mono text-[10px] uppercase tracking-[0.09em]';
+const mono = 'font-mono text-xs uppercase tracking-[0.09em]';
 
 export default function Home() {
   return (
@@ -10,53 +20,50 @@ export default function Home() {
         aria-label="Main navigation"
       >
         <a
-          className="flex items-center gap-2.5 font-bold tracking-[-0.04em]"
+          className="flex items-center text-2xl gap-2.5 font-bold tracking-[-0.04em]"
           href="#top"
           aria-label="OpenMaintainer home"
         >
-          <span className="grid size-[27px] place-items-center rounded-full border-2 border-om-ink font-mono text-[10px] tracking-[-0.1em]">
-            om
-          </span>
           <span>OpenMaintainer</span>
         </a>
-        <div className="ml-auto mr-9 hidden gap-8 text-[13px] text-[#59665f] md:flex">
+        <div className="ml-auto mr-9 hidden gap-8 text-sm text-[#59665f] md:flex">
           <a
-            className="transition-colors hover:text-om-orange"
+            className="transition-colors hover:text-om-orange!"
             href="#how-it-works"
           >
             How it works
           </a>
           <a
-            className="transition-colors hover:text-om-orange"
+            className="transition-colors hover:text-om-orange!"
             href="#principles"
           >
             Principles
           </a>
           <a
-            className="transition-colors hover:text-om-orange"
+            className="transition-colors hover:text-om-orange! flex items-center gap-1.5"
             href={githubUrl}
             target="_blank"
             rel="noreferrer"
           >
-            GitHub <span aria-hidden="true">↗</span>
+            GitHub <ArrowUpRight size={14} />
           </a>
         </div>
         <a
-          className="inline-flex items-center gap-3 bg-om-ink px-[18px] py-[13px] text-xs font-semibold text-om-paper transition hover:-translate-y-0.5 hover:bg-om-orange"
+          className="inline-flex items-center gap-2 bg-om-orange px-5 py-3.5 text-sm font-semibold text-white! transition hover:-translate-y-0.5 hover:bg-om-ink"
           href={appUrl}
           target="_blank"
           rel="noreferrer"
         >
-          Install app <span aria-hidden="true">↗</span>
+          Install app <ArrowUpRight size={16} />
         </a>
       </nav>
 
       <section
-        className="mx-auto grid min-h-[650px] w-[calc(100%-4rem)] max-w-[1160px] items-center gap-16 py-[75px] pb-[90px] lg:grid-cols-[.9fr_1.1fr]"
+        className="mx-auto grid min-h-[650px] w-[calc(100%-4rem)] max-w-[1160px] items-center gap-16 py-[75px] pb-[90px] lg:grid-cols-[1fr_1fr]"
         id="top"
       >
         <div className="mb-14 lg:mb-0">
-          <p className={`${mono} mb-6 text-om-orange`}>
+          <p className={`${mono} mb-6 text-om-orange flex items-center`}>
             <span className="mr-2 inline-block size-[7px] rounded-full bg-om-orange align-[1px] shadow-[0_0_0_5px_#f26b4220]" />
             Autonomous maintenance for open source
           </p>
@@ -72,18 +79,18 @@ export default function Home() {
           </p>
           <div className="flex items-center gap-7">
             <a
-              className="inline-flex items-center gap-3 bg-om-orange px-5 py-4 text-xs font-semibold text-white transition hover:-translate-y-0.5 hover:bg-om-ink"
+              className="inline-flex items-center gap-2 bg-om-orange px-5 py-4 text-sm font-semibold text-white! transition hover:-translate-y-0.5 hover:bg-om-ink"
               href={appUrl}
               target="_blank"
               rel="noreferrer"
             >
-              Add to GitHub <span aria-hidden="true">↗</span>
+              Add to GitHub <ArrowUpRight size={16} />
             </a>
             <a
-              className="border-b border-om-ink pb-1 text-xs font-semibold"
+              className="inline-flex items-center gap-1.5 border-b border-om-ink pb-1 text-sm font-semibold transition-colors hover:border-om-orange hover:text-om-orange!"
               href="#how-it-works"
             >
-              See how it works <span aria-hidden="true">↓</span>
+              See how it works <ArrowDown size={15} />
             </a>
           </div>
           <p className={`${mono} mt-9 text-[#8a938d]`}>
@@ -95,45 +102,40 @@ export default function Home() {
           aria-label="OpenMaintainer triaging a GitHub issue according to repository policy"
         >
           <div className="absolute size-[510px] rounded-full border border-[#b9c3b7]" />
-          <div className="absolute size-[350px] rotate-[35deg] scale-x-50 rounded-full border border-[#c4ccc1]" />
+          <div className="absolute size-[350px] rotate-35 scale-x-50 rounded-full border border-[#c4ccc1]" />
           <div className="relative z-10 w-[78%] max-w-[410px] animate-[rise_.8s_ease_both] border border-om-ink bg-[#fffefa] shadow-[9px_10px_0_#17221e]">
             <div className="flex items-center gap-2 border-b border-om-line px-4 py-3.5 text-[11px]">
-              <span className="grid size-[25px] place-items-center rounded-full bg-om-lime font-mono text-[10px]">
-                om
-              </span>
               <span>
                 OpenMaintainer{' '}
-                <b className="font-medium text-om-orange">is thinking</b>
+                <b className="font-medium text-om-orange">is thinking...</b>
               </span>
-              <span className="ml-auto tracking-[2px] text-[#a3aba4]">•••</span>
+              <MoreHorizontal className="ml-auto text-[#a3aba4]" size={18} />
             </div>
             <div className="flex items-center gap-3 px-5 pb-3 pt-[22px]">
-              <span className="grid size-7 place-items-center bg-om-ink font-mono text-[15px] text-om-lime">
-                #
+              <span className="grid size-7 place-items-center bg-om-ink text-white">
+                <Hash size={16} />
               </span>
               <div>
-                <strong className="block text-[13px]">Issue triage</strong>
-                <small className="mt-1 block text-[10px] text-om-muted">
+                <strong className="block text-sm">Issue triage</strong>
+                <small className="mt-1 block text-xs text-om-muted">
                   mustafa-sayyed / OpenMaintainer
                 </small>
               </div>
-              <span
-                className={`${mono} ml-auto bg-om-lime px-1.5 py-1 text-[8px]`}
-              >
+              <span className="ml-auto bg-[#5bc266] text-white px-2 py-1 font-mono text-[9px] uppercase tracking-[0.09em]">
                 ACTIVE
               </span>
             </div>
-            <div className="mx-5 mb-[15px] bg-[#f0f1eb] p-3.5 text-xs leading-[1.5] text-[#4e5d53]">
+            <div className="mx-5 mb-[15px] bg-[#f0f1eb] p-3.5 text-[13px] leading-[1.5] text-[#4e5d53]">
               I found a likely duplicate and checked the repository policy
               before taking action.
             </div>
             <div className="mx-5 mb-[21px] flex items-center gap-3">
-              <span className="grid size-[25px] place-items-center rounded-full bg-[#c6e8b2] font-bold text-[#30702b]">
-                ✓
+              <span className="grid size-[25px] place-items-center rounded-full bg-[#5bc266] font-bold text-white">
+                <Check size={15} />
               </span>
               <div>
-                <strong className="block text-[13px]">Action approved</strong>
-                <small className="mt-1 block text-[10px] text-om-muted">
+                <strong className="block text-sm">Action approved</strong>
+                <small className="mt-1 block text-xs text-om-muted">
                   Comment with related issue · confidence 94%
                 </small>
               </div>
@@ -146,11 +148,12 @@ export default function Home() {
             </div>
           </div>
           <div className="absolute right-[4%] top-[54px] z-20 rotate-1 border border-om-ink bg-om-paper px-3 py-2.5 font-mono text-[10px] shadow-[4px_4px_0_#17221e]">
-            <span className="mr-1 text-om-orange">◈</span>Your rules, always
+            <ShieldCheck className="mr-1 inline text-om-orange" size={15} />
+            Your rules, always
           </div>
           <div className="absolute bottom-[58px] left-[4%] z-20 -rotate-1 border border-om-ink bg-om-paper px-3 py-2.5 font-mono text-[10px] shadow-[4px_4px_0_#17221e]">
-            <span className="mr-1 text-om-orange">✓</span>No action without
-            approval
+            <Check className="mr-1 inline text-om-orange" size={15} />
+            No action without approval
           </div>
         </div>
       </section>
@@ -268,33 +271,32 @@ export default function Home() {
 
       <footer className="mx-auto grid min-h-[115px] w-[calc(100%-4rem)] max-w-[1160px] grid-cols-2 items-center gap-6 py-7 md:flex md:justify-between">
         <a
-          className="flex items-center gap-2.5 font-bold tracking-[-0.04em]"
+          className="flex items-center text-2xl gap-2.5 font-bold tracking-[-0.04em]"
           href="#top"
         >
-          <span className="grid size-[27px] place-items-center rounded-full border-2 border-om-ink font-mono text-[10px] tracking-[-0.1em]">
-            om
-          </span>
           <span>OpenMaintainer</span>
         </a>
-        <p className="col-span-2 row-start-2 text-xs text-om-muted md:order-2">
+        <p className="col-span-2 row-start-2 text-sm text-om-muted md:order-2">
           Open source maintenance, with a little more breathing room.
         </p>
         <div className="flex flex-col items-end gap-2 font-mono text-[10px] uppercase md:order-3 md:flex-row md:gap-5">
           <a
-            className="hover:text-om-orange"
+            className="hover:text-om-orange! flex items-center gap-1"
             href={githubUrl}
             target="_blank"
             rel="noreferrer"
           >
-            Source ↗
+            <span>Source</span>
+            <ArrowUpRight size={14}  className='-mt-0.5' />
           </a>
           <a
-            className="hover:text-om-orange"
+            className="hover:text-om-orange! flex items-center gap-1"
             href={appUrl}
             target="_blank"
             rel="noreferrer"
           >
-            GitHub App ↗
+            <span>GitHub App</span>
+             <ArrowUpRight size={14} className='-mt-0.5' />
           </a>
         </div>
       </footer>

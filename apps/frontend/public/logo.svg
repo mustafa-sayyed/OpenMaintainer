@@ -1,0 +1,7 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="OpenMaintainer">
+  <rect width="512" height="512" fill="#F26B42"/>
+  <g transform="rotate(-11.8 256 256)">
+    <circle cx="256" cy="256" r="136" stroke="#FFFFFF" stroke-width="72" stroke-dasharray="56 50.8"/>
+  </g>
+  <circle cx="256" cy="256" r="36" fill="#FFFFFF"/>
+</svg>
